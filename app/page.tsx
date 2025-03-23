@@ -25,7 +25,7 @@ export default function Home() {
                 <p className="text-sm font-medium">Website Template</p>
               </div>
               <p className="text-gray-600 max-w-xl">
-                Hello! I'm a Student
+                Hello! I am a Student
               </p>
             </div>
           </section>
