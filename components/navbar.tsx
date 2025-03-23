@@ -5,6 +5,7 @@ import { useUser } from "@/context/user-context"
 import { Button } from "@/components/ui/button"
 import { LogOut } from "lucide-react"
 import LoginForm from "@/components/login-form"
+import Image from "next/image"
 
 export default function Navbar() {
   const { user, logout, isLoggedIn } = useUser()
@@ -36,9 +37,11 @@ export default function Navbar() {
             <div className="flex items-center gap-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden">
-                  <img
+                  <Image
                     src={user?.avatar || "/globe.svg"}
-                    alt={user?.name}
+                    width={50}
+                    height={50}
+                    alt={"username"}
                     className="w-full h-full object-cover"
                   />
                 </div>

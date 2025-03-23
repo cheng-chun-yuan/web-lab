@@ -1,7 +1,7 @@
 import MessageBoard from "@/components/message-board"
 import VisitorCounter from "@/components/visitor-counter"
 import Navbar from "@/components/navbar"
-
+import Image from "next/image"
 export default function Home() {
   return (
     <div className="min-h-screen bg-gray-50">
@@ -11,7 +11,13 @@ export default function Home() {
           {/* Profile Section */}
           <section className="flex flex-col md:flex-row items-center gap-8 bg-white p-8 rounded-xl shadow-sm">
             <div className="w-48 h-48 rounded-full overflow-hidden flex-shrink-0 border-4 border-primary/20">
-              <img src="/globe.svg?height=200&width=200" alt="Profile" className="w-full h-full object-cover" />
+              <Image
+                    src={`/globe.svg`}
+                    alt={"Profile"}
+                    width={200}
+                    height={200}
+                    className="w-full h-full object-cover"
+                  />
             </div>
             <div className="space-y-4 text-center md:text-left">
               <h1 className="text-3xl font-bold text-gray-800">Albert Cheng</h1>

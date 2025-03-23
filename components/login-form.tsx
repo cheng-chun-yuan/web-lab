@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-
+import Image from "next/image"
 import { useState } from "react";
 import { useUser } from "@/context/user-context";
 import { Button } from "@/components/ui/button";
@@ -70,9 +70,11 @@ export default function LoginForm({
               onClick={() => setSelectedAvatar(avatar)}
               >
                 <div className="w-16 h-16 mx-auto rounded-full overflow-hidden">
-                  <img
-                    src={`/${avatar.name}.svg?height=100&width=100&text=${avatar.id}`}
+                <Image
+                    src={`/${avatar.name}.svg`}
                     alt={`Avatar ${avatar.name}`}
+                    width={100}
+                    height={100}
                     className="w-full h-full object-cover"
                   />
                 </div>

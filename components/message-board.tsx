@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-
+import Image from "next/image"
 import { useState, useEffect } from "react"
 import { useUser } from "@/context/user-context"
 import { Button } from "@/components/ui/button"
@@ -90,8 +90,10 @@ export default function MessageBoard() {
             {messages.map((message) => (
               <div key={message.id} className="p-4 bg-gray-50 rounded-lg flex gap-3">
                 <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                  <img
+                  <Image
                     src={message.avatar || "/globe.svg?height=50&width=50&text=A"}
+                    width={50}
+                    height={50}
                     alt={message.author}
                     className="w-full h-full object-cover"
                   />
