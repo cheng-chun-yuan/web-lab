@@ -10,7 +10,8 @@ export async function GET() {
     })
     return NextResponse.json(messages)
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 })
+    console.error('Error fetching messages:', error)
+    return NextResponse.json({ error: 'Failed to fetch messages', details: error instanceof Error ? error.message : String(error) }, { status: 500 })
   }
 }
 
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json(message)
   } catch (error) {
-    return NextResponse.json({ error: 'Failed to create message' }, { status: 500 })
+    console.error('Error creating message:', error)
+    return NextResponse.json({ error: 'Failed to create message', details: error instanceof Error ? error.message : String(error) }, { status: 500 })
   }
 }
