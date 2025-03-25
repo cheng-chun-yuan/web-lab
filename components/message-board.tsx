@@ -12,7 +12,8 @@ interface Message {
   id: number
   author: string
   content: string
-  timestamp: Date
+  createdAt: Date
+  updatedAt: Date
   avatar?: string
   userId?: string
 }
@@ -20,6 +21,8 @@ interface Message {
 export default function MessageBoard() {
   const { user, isLoggedIn } = useUser()
   const [messages, setMessages] = useState<Message[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
   const [content, setContent] = useState("")
   const [isMounted, setIsMounted] = useState(false)
 
@@ -30,11 +33,19 @@ export default function MessageBoard() {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
+        setIsLoading(true)
+        setError(null)
         const response = await fetch('/api/messages')
+        if (!response.ok) {
+          throw new Error('Failed to fetch messages')
+        }
         const data = await response.json()
-        setMessages(data)
+        setMessages(Array.isArray(data) ? data : [])
       } catch (error) {
         console.error('Failed to fetch messages:', error)
+        setError(error instanceof Error ? error.message : 'Failed to fetch messages')
+      } finally {
+        setIsLoading(false)
       }
     }
 
@@ -109,10 +120,21 @@ export default function MessageBoard() {
 
       <div className="space-y-4 mt-8">
         <h3 className="text-lg font-medium text-gray-700">
-          {messages.length === 0 ? "No messages yet" : `${messages.length} Message${messages.length !== 1 ? "s" : ""}`}
+          {isLoading ? "Loading..." :
+           error ? "Error loading messages" :
+           messages.length === 0 ? "No messages yet" :
+           `${messages.length} Message${messages.length !== 1 ? "s" : ""}`}
         </h3>
 
-        {messages.length === 0 ? (
+        {isLoading ? (
+          <div className="text-center py-8 bg-gray-50 rounded-lg">
+            <p className="text-gray-500">Loading messages...</p>
+          </div>
+        ) : error ? (
+          <div className="text-center py-8 bg-gray-50 rounded-lg">
+            <p className="text-red-500">{error}</p>
+          </div>
+        ) : messages.length === 0 ? (
           <div className="text-center py-8 bg-gray-50 rounded-lg">
             <p className="text-gray-500">Be the first to leave a message!</p>
           </div>
@@ -132,7 +154,9 @@ export default function MessageBoard() {
                 <div className="flex-1">
                   <div className="flex justify-between items-start mb-2">
                     <h4 className="font-medium">{message.author}</h4>
-                    <span className="text-xs text-gray-500">{message.timestamp.toLocaleTimeString()}</span>
+                    <span className="text-xs text-gray-500">
+                      {new Date(message.createdAt).toLocaleString()}
+                    </span>
                   </div>
                   <p className="text-gray-700">{message.content}</p>
                 </div>

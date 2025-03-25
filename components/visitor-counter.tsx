@@ -9,9 +9,20 @@ export default function VisitorCounter() {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
+    const updateVisitorCount = async () => {
+      try {
+        const response = await fetch('/api/visitors')
+        const data = await response.json()
+        if (data.count) {
+          setCount(data.count)
+        }
+      } catch (error) {
+        console.error('Failed to update visitor count:', error)
+      }
+    }
+
     setIsMounted(true)
-    // Increment the counter only after client-side hydration is complete
-    setCount((prevCount) => prevCount + 1)
+    updateVisitorCount()
   }, [])
 
   return (

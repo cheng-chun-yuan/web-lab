@@ -5,7 +5,7 @@ export async function GET() {
   try {
     const messages = await prisma.message.findMany({
       orderBy: {
-        timestamp: 'desc'
+        createdAt: 'desc'
       }
     })
     return NextResponse.json(messages)
