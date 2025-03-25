@@ -27,21 +27,52 @@ export default function MessageBoard() {
     setIsMounted(true)
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await fetch('/api/messages')
+        const data = await response.json()
+        setMessages(data)
+      } catch (error) {
+        console.error('Failed to fetch messages:', error)
+      }
+    }
+
+    if (isMounted) {
+      fetchMessages()
+    }
+  }, [isMounted])
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!content.trim()) return
 
-    const newMessage: Message = {
-      id: Date.now(),
+    const newMessage = {
       author: user?.name || "Anonymous",
       content: content.trim(),
-      timestamp: new Date(),
       avatar: user?.avatar,
       userId: user?.id,
     }
 
-    setMessages([...messages, newMessage])
+    try {
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newMessage),
+      })
+
+      if (response.ok) {
+        const createdMessage = await response.json()
+        setMessages(prev => [createdMessage, ...prev])
+        setContent('')
+      }
+    } catch (error) {
+      console.error('Failed to send message:', error)
+    }
+
     setContent("")
   }
 
