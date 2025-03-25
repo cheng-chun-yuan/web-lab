@@ -3,7 +3,7 @@
 import type React from "react"
 import Image from "next/image"
 import { useState, useEffect } from "react"
-import { useUser } from "@/context/user-context"
+import { useSession } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Send } from "lucide-react"
@@ -19,7 +19,7 @@ interface Message {
 }
 
 export default function MessageBoard() {
-  const { user, isLoggedIn } = useUser()
+  const { data: session } = useSession()
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -60,10 +60,10 @@ export default function MessageBoard() {
     if (!content.trim()) return
 
     const newMessage = {
-      author: user?.name || "Anonymous",
+      author: session?.user?.name || "Anonymous",
       content: content.trim(),
-      avatar: user?.avatar,
-      userId: user?.id,
+      avatar: session?.user?.image || "/globe.svg",
+      userId: session?.user?.id,
     }
 
     try {
@@ -102,7 +102,7 @@ export default function MessageBoard() {
         <div className="flex flex-col md:flex-row gap-2">
           <Textarea
             placeholder={
-              isLoggedIn
+              session?.user
                 ? "Write your message here..."
                 : "Login to leave a personalized message or write as anonymous..."
             }
@@ -110,8 +110,9 @@ export default function MessageBoard() {
             onChange={(e) => setContent(e.target.value)}
             className="flex-1 min-h-[100px]"
             required
+            disabled={!session?.user}
           />
-          <Button type="submit" className="md:self-end">
+          <Button type="submit" className="md:self-end" disabled={!session?.user}>
             <Send className="h-4 w-4 mr-2" />
             Send
           </Button>
