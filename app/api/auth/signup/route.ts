@@ -1,9 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db';
 import { hashPassword } from '@/lib/auth';
-import { User } from '@prisma/client';
-
-type CreateUserInput = Pick<User, 'email' | 'name'> & { password: string };
 
 export async function POST(req: Request) {
   try {
