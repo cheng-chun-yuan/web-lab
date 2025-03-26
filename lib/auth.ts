@@ -27,6 +27,7 @@ export const authOptions: AuthOptions = {
         const isValid = await verifyPassword(credentials.password, user.password)
         if (!isValid) return null
 
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { password: _, ...userWithoutPassword } = user
         return userWithoutPassword as AuthUser
       },
