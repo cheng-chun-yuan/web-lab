@@ -4,7 +4,7 @@ import { hashPassword } from '@/lib/auth';
 
 export async function POST(req: Request) {
   try {
-    const { email, password, name } = await req.json();
+    const { email, password, name, avatar } = await req.json();
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -25,11 +25,13 @@ export async function POST(req: Request) {
         email,
         name,
         password: hashedPassword,
+        avatar: avatar || "/globe.svg",
       },
       select: {
         id: true,
         email: true,
         name: true,
+        avatar: true,
         createdAt: true,
         updatedAt: true,
       },

@@ -62,7 +62,7 @@ export default function MessageBoard() {
     const newMessage = {
       author: session?.user?.name || "Anonymous",
       content: content.trim(),
-      avatar: session?.user?.image || "/globe.svg",
+      avatar: session?.user?.avatar || "/globe.svg",
       userId: session?.user?.id,
     }
 

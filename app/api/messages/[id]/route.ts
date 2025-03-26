@@ -4,10 +4,10 @@ import { prisma } from '@/lib/db'
 import { authOptions } from '@/lib/auth'
 
 export async function DELETE(
-  req: NextRequest,
-  context: { params: { id: string } }
+  _req: NextRequest
 ) {
-  const { params } = context
+  const { searchParams } = new URL(_req.url)
+  const id = searchParams.get('id')
   try {
     const session = await getServerSession(authOptions)
 
@@ -15,8 +15,12 @@ export async function DELETE(
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
     }
 
+    if (!id) {
+      return NextResponse.json({ message: 'Missing message ID' }, { status: 400 })
+    }
+
     const message = await prisma.message.findUnique({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
       include: { user: true },
     })
 
@@ -29,7 +33,7 @@ export async function DELETE(
     }
 
     await prisma.message.delete({
-      where: { id: parseInt(params.id) },
+      where: { id: parseInt(id) },
     })
 
     return NextResponse.json({ message: 'Message deleted successfully' })

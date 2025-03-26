@@ -42,7 +42,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full overflow-hidden">
                   <Image
-                    src={session?.user?.image || "/globe.svg"}
+                    src={session?.user?.avatar || "/globe.svg"}
                     width={50}
                     height={50}
                     alt={"username"}
