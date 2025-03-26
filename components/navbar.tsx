@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
-import { signOut } from 'next-auth/react'
+import { useUser } from "@/lib/hooks/useUser";
+import { signOut } from "next-auth/react";
 export default function Navbar() {
-  const { data: session } = useSession();
+  const { user } = useUser();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -37,23 +37,38 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <Link href="/about">About</Link>
-          {session ? (
+          <Link href="/user">All Users</Link>
+          {user ? (
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full overflow-hidden">
-                  <Image
-                    src={session?.user?.avatar || "/globe.svg"}
-                    width={50}
-                    height={50}
-                    alt={"username"}
-                    className="w-full h-full object-cover"
-                  />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  signOut();
+                }}
+              >
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-full overflow-hidden">
+                    <Image
+                      src={user?.avatar || "/globe.svg"}
+                      width={50}
+                      height={50}
+                      alt={user?.name || "username"}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                  <span className="font-medium text-sm hidden sm:inline">
+                    {user?.name}
+                  </span>
                 </div>
-                <span className="font-medium text-sm hidden sm:inline">
-                  {session?.user?.name}
-                </span>
-              </div>
-              <Button variant="outline" size="sm" onClick={() => {signOut()}}>
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  signOut();
+                }}
+              >
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>

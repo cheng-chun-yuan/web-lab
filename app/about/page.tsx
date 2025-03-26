@@ -1,11 +1,11 @@
 'use client';
 
-import { useSession } from "next-auth/react";
+import { useUser } from '@/lib/hooks/useUser';
 import { signOut } from 'next-auth/react'
 import { Button } from "@/components/ui/button";
 
 export default function AboutPage() {
-  const { data: session } = useSession();
+  const { user } = useUser();
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-3xl mx-auto">
@@ -54,7 +54,7 @@ export default function AboutPage() {
             <p className="text-gray-600 mb-4">
               Join our community today by creating an account or signing in if you already have one.
             </p>
-            { !session?.user ? (
+            { !user ? (
               <div className="space-x-4">
                 <a
                   href="/signup"

@@ -3,20 +3,19 @@ import MessageBoard from "@/components/message-board"
 import VisitorCounter from "@/components/visitor-counter"
 
 import Image from "next/image"
-import { useSession } from 'next-auth/react'
+import { useUser } from '@/lib/hooks/useUser';
 import Link from 'next/link'
 export default function Home() {
-  const { data: session } = useSession();
+  const { user } = useUser();
 
   return (
-
       <main className="p-6 md:p-12">
         <div className="max-w-4xl mx-auto space-y-12">
           {/* Welcome Section */}
           <section className="flex flex-col items-center gap-8 bg-white p-8 rounded-xl shadow-sm text-center">
             <div className="w-32 h-32 rounded-full overflow-hidden flex-shrink-0 border-4 border-primary/20">
               <Image
-                src={`/globe.svg`}
+                src={"/pepe.jpg"}
                 alt={"Logo"}
                 width={200}
                 height={200}
@@ -28,7 +27,7 @@ export default function Home() {
               <p className="text-gray-600 max-w-xl">
                 Share your thoughts and connect with others in our community
               </p>
-              {!session ? (
+              {!user ? (
                 <div className="flex gap-4 justify-center mt-6">
                   <Link
                     href="/signup"
@@ -72,7 +71,7 @@ export default function Home() {
           <section className="bg-white p-8 rounded-xl shadow-sm">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-gray-800">Message Board</h2>
-              {!session && (
+              {!user && (
                 <p className="text-gray-600">
                   <Link href="/login" className="text-indigo-600 hover:text-indigo-800">
                     Login
