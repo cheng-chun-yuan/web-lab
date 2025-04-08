@@ -23,9 +23,12 @@ export default function Home() {
               />
             </div>
             <div className="space-y-4">
-              <h1 className="text-4xl font-bold text-gray-800">Welcome to Message Board</h1>
+              <h1 className="text-4xl font-bold text-gray-800">I am Pepe</h1>
               <p className="text-gray-600 max-w-xl">
-                Share your thoughts and connect with others in our community
+                Hi, I'm Pepe, a passionate Next.js developer, and I'm excited to share my thoughts and connect with others in our community
+              </p>
+              <p className="text-gray-600 max-w-xl">
+                Login in and connect with me
               </p>
               {!user ? (
                 <div className="flex gap-4 justify-center mt-6">
